@@ -184,6 +184,14 @@ class CallsService {
       },
       targetCallItem.transmitterSource,
     );
+    exports['saltychat'].EstablishCall(
+      targetCallItem.receiverSource,
+      targetCallItem.transmitterSource,
+    );
+    exports['saltychat'].EstablishCall(
+      targetCallItem.transmitterSource,
+      targetCallItem.receiverSource,
+    );
   }
 
   async handleFetchCalls(
@@ -248,6 +256,8 @@ class CallsService {
     // lets protect against that
     if (currentCall) {
       // We don't want to send the WAS_ENDED if the call was never accepted, send a rejected instead which handles properly if they're in a call.
+      exports['saltychat'].EndCall(currentCall.receiverSource, currentCall.transmitterSource);
+      exports['saltychat'].EndCall(currentCall.transmitterSource, currentCall.receiverSource);
       if (currentCall.is_accepted) {
         emitNet(
           CallEvents.WAS_ENDED,
